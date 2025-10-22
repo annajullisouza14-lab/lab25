@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finalizar Compra - Loja de Prendas</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background-color: #fffaf4;
+      color: #4a2e1b;
+    }
+    header {
+      background-color: #f3e5d0;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo div {
+      width: 40px; height: 40px;
+      background: radial-gradient(circle, #8b5e3c 40%, #5b3a1d 100%);
+      border-radius: 50%;
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: bold;
+    }
+    .logo h1 { margin: 0; font-size: 1.5rem; }
+    main { padding: 40px 5%; display: flex; flex-direction: column; align-items: center; }
+    h2 { color: #5b3a1d; margin-bottom: 20px; }
+    .carrinho-resumo {
+      width: 100%; max-width: 700px;
+      background: white; border: 1px solid #e0c9a6;
+      border-radius: 12px; padding: 20px; margin-bottom: 40px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    .item-carrinho {
+      display: flex; justify-content: space-between;
+      border-bottom: 1px solid #f0e0c9; padding: 10px 0;
+    }
+    .item-carrinho:last-child { border-bottom: none; }
+    .total { font-weight: bold; font-size: 1.2rem; text-align: right; margin-top: 15px; color: #5b3a1d; }
+    .form-compra {
+      width: 100%; max-width: 700px;
+      background: white; border: 1px solid #e0c9a6;
+      border-radius: 12px; padding: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    label { display: block; margin-bottom: 6px; font-weight: 600; color: #5b3a1d; }
+    input, select { width: 100%; padding: 10px; border: 1px solid #d9b48f; border-radius: 8px; margin-bottom: 15px; font-size: 14px; background-color: #fffaf4; }
+    button {
+      background-color: #8b5e3c; color: white; border: none;
+      padding: 12px 20px; border-radius: 8px;
+      font-size: 16px; cursor: pointer; transition: background 0.3s;
+    }
+    button:hover { background-color: #70482c; }
+    footer {
+      text-align: center; padding: 30px; background-color: #000; color: white; margin-top: 60px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">
+      <div>LP</div>
+      <h1>Loja de Prendas</h1>
+    </div>
+  </header>
+
+  <main>
+    <h2>Resumo do Carrinho</h2>
+    <div class="carrinho-resumo" id="carrinhoResumo"></div>
+
+    <h2>Informações para Entrega</h2>
+    <form class="form-compra" onsubmit="finalizarCompra(event)">
+      <label for="nome">Nome Completo</label>
+      <input type="text" id="nome" required>
+
+      <label for="endereco">Endereço</label>
+      <input type="text" id="endereco" required>
+
+      <label for="cidade">Cidade</label>
+      <input type="text" id="cidade" required>
+
+      <label for="estado">Estado</label>
+      <input type="text" id="estado" required>
+
+      <label for="cep">CEP</label>
+      <input type="text" id="cep" required>
+
+      <label for="pagamento">Forma de Pagamento</label>
+      <select id="pagamento" required>
+        <option value="">Selecione</option>
+        <option value="pix">PIX</option>
+        <option value="boleto">Boleto Bancário</option>
+        <option value="cartao">Cartão de Crédito</option>
+      </select>
+
+      <button type="submit">Finalizar Compra</button>
+    </form>
+  </main>
+
+  <footer>
+    © 2025 Loja de Prendas — Tradição e elegância gaúcha.
+  </footer>
+
+  <script>
+    const carrinho = JSON.parse(localStorage.getItem("carrinho")) || [];
+    const container = document.getElementById("carrinhoResumo");
+
+    if (carrinho.length === 0) {
+      container.innerHTML = "<p>Seu carrinho está vazio.</p>";
+    } else {
+      let total = 0;
+      carrinho.forEach(item => {
+        const div = document.createElement("div");
+        div.classList.add("item-carrinho");
+        div.innerHTML = `<span>${item.nome}</span><span>R$ ${item.preco.toFixed(2)}</span>`;
+        container.appendChild(div);
+        total += item.preco;
+      });
+
+      const totalDiv = document.createElement("div");
+      totalDiv.classList.add("total");
+      totalDiv.textContent = `Total: R$ ${total.toFixed(2)}`;
+      container.appendChild(totalDiv);
+    }
+
+    function finalizarCompra(e) {
+      e.preventDefault();
+      alert("Compra finalizada com sucesso! Obrigado por comprar na Loja de Prendas.");
+      localStorage.removeItem("carrinho");
+      window.location.href = "home.html";
+    }
+  </script>
+</body>
+</html>
